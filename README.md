@@ -17,26 +17,28 @@ To change the forum you must edit the `MessageBoardSpider` class in `forums/spid
 
 ```python
 class MessageBoardSpider(scrapy.Spider):
+
     name = "forum"
-    allowed_domains= ["www.myproana.com"]
-    start_urls = [
-        'https://www.myproana.com/index.php/forum/58-bed-discussions/',
-    ]
 
-    self.thread_page = 'td.col_f_content'
-    self.next_thread_page = 'li.next a::attr(href)'
-    
-    # comment parsing details
-    self.comment = 'div.post_block'
-    self.comment_text = 'div.post.entry-content'
-    self.next_comment_page = 'li.next a::attr(href)'
-    self.thread_link = 'span.post_id.right.ipsType_small.desc.blend_links a::attr(href)'
-    self.post_id = 'div.post_block::attr(id)'
-    self.date = 'abbr.published::text'
-    self.user_name = 'p.member_title::text'
+    def __init__(self):
+        super(MessageBoardSpider, self)
+
+        self.start_urls = [
+            "https://www.sparkpeople.com/myspark/messageboard_topics.asp?imboard=7"
+        ]
+
+        self.allowed_domains= ["sparkpeople.com"]
+
+        # self.thread_pages = 'div.topics_table_row'
+        self.next_thread_page = 'a.next_page'
+ 
+        # comment parsing details
+        self.comment = 'div.main_table_row'
+        # self.next_comment_page = 'a.next_page ::attr(href)'
 ```
+You should also edit the `parse` method which is the default callback method for scrapy response objects.
 
-Note that `www.myproana.com` has multiple subforums but we are only looking at `www.myproana.com/index.php/forum/58-bed-discussions`.
+Note that `www.sparkpeople.com` has multiple subforums but we are only looking at `https://www.sparkpeople.com/myspark/messageboard_topics.asp?imboard=7`.
 
 ## Dependencies
 - [Scrapy](https://doc.scrapy.org/en/latest/)
